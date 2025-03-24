@@ -38,7 +38,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 通过knife4j生成接口文档
+     * 通过knife4j生成接口文档(@Bean 注解的作用是显式声明一个方法返回的对象需要被注册到 Spring 容器中)
      * @return
      */
     @Bean
