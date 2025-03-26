@@ -111,6 +111,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据id查询菜品和对应的口味
+     *
      * @param id
      * @return
      */
@@ -119,19 +120,20 @@ public class DishServiceImpl implements DishService {
         Dish dish = dishMapper.getById(id);
         List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(id);
         DishVO dishVO = new DishVO();
-        BeanUtils.copyProperties(dish,dishVO);
+        BeanUtils.copyProperties(dish, dishVO);
         dishVO.setFlavors(dishFlavors);
         return dishVO;
     }
 
     /**
      * 修改菜品
+     *
      * @param dishDTO
      */
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
-        BeanUtils.copyProperties(dishDTO,dish);
+        BeanUtils.copyProperties(dishDTO, dish);
         dishMapper.update(dish);
         //菜品关联的口味，先删除再新增
         dishFlavorMapper.deleteByDishId(dishDTO.getId());
@@ -147,6 +149,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 根据分类id查询菜品
+     *
      * @param categoryId
      * @return
      */
@@ -154,5 +157,20 @@ public class DishServiceImpl implements DishService {
     public List<Dish> list(Long categoryId) {
         Dish dish = Dish.builder().categoryId(categoryId).status(StatusConstant.ENABLE).build();
         return dishMapper.list(dish);
+    }
+
+    /**
+     * 菜品起售停售
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Dish setmeal = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(setmeal);
     }
 }
