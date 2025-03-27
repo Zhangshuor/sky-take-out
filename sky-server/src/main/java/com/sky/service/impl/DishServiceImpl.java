@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -172,5 +173,27 @@ public class DishServiceImpl implements DishService {
                 .status(status)
                 .build();
         dishMapper.update(setmeal);
+    }
+
+    /**
+     * 条件查询菜品和口味
+     * @param dish
+     * @return
+     */
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        //根据dish查询对应的菜品列表
+        List<Dish> dishList = dishMapper.list(dish);
+        List<DishVO> dishVOList = new ArrayList<>();
+        dishList.forEach(
+                item -> {
+                    DishVO dishVO = new DishVO();
+                    BeanUtils.copyProperties(item, dishVO);
+                    List<DishFlavor> flavors = dishFlavorMapper.getByDishId(item.getId());
+                    dishVO.setFlavors(flavors);
+                    dishVOList.add(dishVO);
+                }
+        );
+        return dishVOList;
     }
 }
