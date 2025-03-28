@@ -89,6 +89,7 @@ public class OrderServiceImpl implements OrderService {
         order.setPhone(addressBook.getPhone());
         order.setConsignee(addressBook.getConsignee());
         order.setUserId(userId);
+        order.setAddress(addressBook.getDetail());
         orderMapper.insert(order);
         //向订单明细表插入n条数据
         List<OrderDetail> orderDetailList = new ArrayList<>();
